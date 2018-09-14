@@ -13,6 +13,11 @@ import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.activity_main.*
+
+
 class MainActivity : Activity() {
 
     //ao fazer envio da resolucao, use este link no seu codigo!
@@ -24,13 +29,12 @@ class MainActivity : Activity() {
     //http://pox.globo.com/rss/g1/ciencia-e-saude/
     //http://pox.globo.com/rss/g1/tecnologia/
 
-    //use ListView ao invés de TextView - deixe o atributo com o mesmo nome
-    private var conteudoRSS: TextView? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        conteudoRSS = findViewById(R.id.conteudoRSS)
+
+        conteudoRSS.layoutManager = LinearLayoutManager(this)
+        conteudoRSS.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
     }
 
     override fun onStart() {
@@ -39,7 +43,9 @@ class MainActivity : Activity() {
             try {
                 val feedXML = getRssFeed(RSS_FEED)
                 uiThread {
-                    conteudoRSS!!.text = feedXML
+                    var news = ParserRSS.parse(feedXML)
+                    // Define adapter
+                    conteudoRSS.adapter = ItemRSSAdapter(news, this@MainActivity)
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
