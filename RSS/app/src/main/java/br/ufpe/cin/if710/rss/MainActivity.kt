@@ -2,7 +2,6 @@ package br.ufpe.cin.if710.rss
 
 import android.app.Activity
 import android.os.Bundle
-import android.widget.TextView
 
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -19,9 +18,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : Activity() {
-
-    //ao fazer envio da resolucao, use este link no seu codigo!
-    private val RSS_FEED = "http://leopoldomt.com/if1001/g1brasil.xml"
 
     //OUTROS LINKS PARA TESTAR...
     //http://rss.cnn.com/rss/edition.rss
@@ -41,7 +37,7 @@ class MainActivity : Activity() {
         super.onStart()
         doAsync {
             try {
-                val feedXML = getRssFeed(RSS_FEED)
+                val feedXML = getRssFeed(getString(R.string.rssfeed))
                 uiThread {
                     // Define adapter
                     conteudoRSS.adapter = ItemRSSAdapter(ParserRSS.parse(feedXML), this@MainActivity)
