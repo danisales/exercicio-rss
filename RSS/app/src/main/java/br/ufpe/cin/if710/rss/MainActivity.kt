@@ -43,9 +43,8 @@ class MainActivity : Activity() {
             try {
                 val feedXML = getRssFeed(RSS_FEED)
                 uiThread {
-                    var news = ParserRSS.parse(feedXML)
                     // Define adapter
-                    conteudoRSS.adapter = ItemRSSAdapter(news, this@MainActivity)
+                    conteudoRSS.adapter = ItemRSSAdapter(ParserRSS.parse(feedXML), this@MainActivity)
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
